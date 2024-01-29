@@ -43,13 +43,13 @@ def frequency_analysis(histogram):
     return mean, median, mode
 
 text = histogram('great-gatsby.txt')
-print(f"Unique words: {unique_words(text)}")
-print(f"Most common word: {most_common(text)}")
-print(f"Least common word: {least_common(text)}")
-mean, median, mode = frequency_analysis(text)
-print(f"Mean: {mean}, Median: {median}, Mode: {mode}")
+# print(f"Unique words: {unique_words(text)}")
+# print(f"Most common word: {most_common(text)}")
+# print(f"Least common word: {least_common(text)}")
+# mean, median, mode = frequency_analysis(text)
+# print(f"Mean: {mean}, Median: {median}, Mode: {mode}")
 
-frequency('and', text)
-print(frequency('and', text))
+# frequency('and', text)
+# print(frequency('and', text))
 
 

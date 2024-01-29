@@ -1,5 +1,6 @@
 import random
 import sys
+
 # read in the words file
 with open('/usr/share/dict/words', 'r') as file:
     words = file.read().split()

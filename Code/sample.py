@@ -5,6 +5,8 @@ import histogram
  
 # It should not yet take into account the distributions of the words.
 def random_word(histogram):
-    word = random.choice(word)
+    return random.choice(histogram)
 
-print(random_word)
+hist = histogram.histogram('great-gatsby.txt')
+word = random_word(hist)
+print(word)
