@@ -6,6 +6,7 @@ import random
 
 class Dictogram(dict):
     """Dictogram is a histogram implemented as a subclass of the dict type."""
+    
 
     def __init__(self, word_list=None):
         """Initialize this histogram as a new dict and count given words."""
@@ -20,16 +21,31 @@ class Dictogram(dict):
 
     def add_count(self, word, count=1):
         """Increase frequency count of given word by given count amount."""
-        # TODO: Increase word frequency by count
+        self.tokens += count
+        if word in self:
+            self[word] += count
+        else:
+            self[word] = count
+            self.types += 1
+            
+        
 
     def frequency(self, word):
         """Return frequency count of given word, or 0 if word is not found."""
-        # TODO: Retrieve word frequency count
+        if word in self: 
+            return self[word]
+        else:
+            return 0
+        
 
     def sample(self):
         """Return a word from this histogram, randomly sampled by weighting
         each word's probability of being chosen by its observed frequency."""
-        # TODO: Randomly choose a word based on its frequency in this histogram
+        # Create a list where each word appears as many times as its frequency
+        probable_words = [word for word, freq in self.items() for _ in range(freq)]
+        # Choose a random word from the list
+        return random.choice(probable_words)
+    
 
 
 def print_histogram(word_list):
