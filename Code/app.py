@@ -1,21 +1,18 @@
-"""Main script, uses other modules to generate sentences."""
-from flask import Flask
+# create a flask app that will display the random sentence generated in sentence.py 
+# when the user visits the home page
 
+from flask import Flask
+import sentence
+import string
 
 app = Flask(__name__)
 
-# TODO: Initialize your histogram, hash table, or markov chain here.
-# Any code placed here will run only once, when the server starts.
 
-
-@app.route("/")
+@app.route('/')
 def home():
-    """Route that returns a web page containing the generated text."""
-    return "<p>TODO: Return a word here!</p>"
-
-
-if __name__ == "__main__":
-    """To run the Flask server, execute `python app.py` in your terminal.
-       To learn more about Flask's DEBUG mode, visit
-       https://flask.palletsprojects.com/en/2.0.x/server/#in-code"""
-    app.run(debug=True)
+    word_list = sentence.histogram.histogram('great-gatsby.txt')
+    histogram_data = sentence.create_histogram(word_list)
+    
+    sentence_data = sentence.generate_sentence(histogram_data, 25)
+    sentence_without_punctuation = ''.join(sentence_data).translate(str.maketrans('', '', string.punctuation))
+    return sentence_without_punctuation  # Return the sentence without punctuation
