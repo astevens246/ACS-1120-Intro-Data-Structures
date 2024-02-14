@@ -19,6 +19,7 @@ class LinkedList:
         """Initialize this linked list and append the given items, if any."""
         self.head = None  # First node
         self.tail = None  # Last node
+        self.size = 0 # Number of nodes in the list
         # Append given items
         if items is not None:
             for item in items:
@@ -95,29 +96,42 @@ class LinkedList:
         return None
             
     def delete(self, item):
-        """Delete the given item from this linked list, or raise ValueError.
-        TODO: Best case running time: O(???) Why and under what conditions?
-        TODO: Worst case running time: O(???) Why and under what conditions?"""
-        # TODO: Loop through all nodes to find one whose data matches given item
-        this_node = self.head
-        prev_node = None
-        while this_node:
-            if this_node.data == item:
-                if prev_node:
-                    prev_node.next = this_node.next
-                else: 
-                    self.head = this_node.next
-                self.size -= 1
-                return True # data removed
-            else:
-                prev_node = this_node
-                this_node = this_node.next
+        """Delete the given item from this linked list, or raise ValueError."""
+        # If the list is empty, raise an error
+        if self.is_empty():
             raise ValueError('Item not found: {}'.format(item))
+        # If the item to be deleted is at the head of the list
+        if self.head.data == item:
+            self.head = self.head.next
+            if self.head is None:
+                self.tail = None
+        else:
+            # Loop through all nodes to find one whose data matches given item
+            current = self.head
+            while current.next is not None and current.next.data != item:
+                current = current.next
+            # If the item was found, update the previous node to skip around node with matching data
+            if current.next is not None:
+                if current.next == self.tail:
+                    self.tail = current
+                current.next = current.next.next
+            else:
+                # Otherwise raise error to tell user that delete has failed
+                raise ValueError('Item not found: {}'.format(item))
+        self.size -= 1
 
-        # TODO: Update previous node to skip around node with matching data
- 
-        # TODO: Otherwise raise error to tell user that delete has failed
-        # Hint: raise ValueError('Item not found: {}'.format(item))
+
+
+    # Then, add a new replace method to your LinkedList class that deletes an existing item and replaces it with a new item, without creating a new node.
+    def replace(self, old_item, new_item):
+            """Replace the old item with the new item in this linked list, or raise ValueError."""
+            current = self.head
+            while current is not None:
+                if current.data == old_item:
+                    current.data = new_item
+                    return
+                current = current.next
+            raise ValueError('Item not found: {}'.format(old_item))
 
 
 def test_linked_list():

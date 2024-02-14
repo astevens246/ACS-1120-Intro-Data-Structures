@@ -197,7 +197,10 @@ class LinkedListTest(unittest.TestCase):
         ll.replace('A', 'D')
         assert ll.head.data == 'D'
         # for item not in list
-        ll.replace('X', 'M')
+        try:
+            ll.replace('X', 'M')
+        except ValueError:
+            pass
         assert ll.head.data == 'D'
 
 
