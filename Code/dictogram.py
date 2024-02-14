@@ -28,6 +28,14 @@ class Dictogram(dict):
             self[word] = count
             self.types += 1
             
+    def return_weighted_random_word(self):
+        """Return a word from this Dictogram, randomly chosen by weighting
+        each word's probability of being chosen by its observed frequency."""
+        # Create a list where each word appears as many times as its frequency
+        weighted_words = [word for word, freq in self.items() for _ in range(freq)]
+        # Choose a random word from the list
+        return random.choice(weighted_words)
+            
         
 
     def frequency(self, word):

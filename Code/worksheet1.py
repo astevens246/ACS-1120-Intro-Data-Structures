@@ -21,3 +21,8 @@ for word in words:
     word_frequency[word] = word_frequency.get(word, 0) + 1
 
 print(word_frequency)
+
+like_transitions = {
+    'dogs': 2,
+    'cats': 1
+}
