@@ -24,6 +24,13 @@ class LinkedList:
         if items is not None:
             for item in items:
                 self.append(item)
+                
+    def __iter__(self):
+        """Make the linked list iterable."""
+        current = self.head
+        while current is not None:
+            yield current.data
+            current = current.next
 
     def __repr__(self):
         """Return a string representation of this linked list."""
