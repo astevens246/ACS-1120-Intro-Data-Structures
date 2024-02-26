@@ -32,34 +32,38 @@ class HashTable(object):
         """Return a list of all keys in this hash table.
         TODO: Running time: O(???) Why and under what conditions?"""
         # Collect all keys in each bucket
-        all_keys = []
-        for bucket in self.buckets:
-            for key, value in bucket.items():
-                all_keys.append(key)
-        return all_keys
+        
+        all_keys = [] #creating an empty list to store all the keys
+        for bucket in self.buckets: 
+            for key, value in bucket.items(): #iterating over the items in the bucket
+                all_keys.append(key) #appending the key to the all_keys list
+        return all_keys #returning the list of all keys in the hash table
 
     def values(self):
         """Return a list of all values in this hash table.
         TODO: Running time: O(???) Why and under what conditions?"""
         # TODO: Loop through all buckets
-        all_values = []
-        for bucket in self.buckets:
+        
+        all_values = [] #creating an empty list to store all the values
+        for bucket in self.buckets:# iterating over the buckets 
             for key, value in bucket.items():  # TODO: Collect all values in each bucket
                 all_values.append(value)
-        return all_values
+        return all_values #returning the list of all values in the hash table
 
     def items(self):
         """Return a list of all items (key-value pairs) in this hash table.
         TODO: Running time: O(???) Why and under what conditions?"""
         # Collect all pairs of key-value entries in each bucket
-        all_items = []
-        for bucket in self.buckets:
-            all_items.extend(bucket.items())
+        
+        all_items = [] #creating an empty list to store all the items
+        for bucket in self.buckets: #iterating over the buckets
+            all_items.extend(bucket.items()) #appending the items in the bucket to the all_items list
         return all_items
 
     def length(self):
         """Return the number of key-value entries by traversing its buckets.
         TODO: Running time: O(???) Why and under what conditions?"""
+        
         # TODO: Loop through all buckets
         all_items = self.items()
         # TODO: Count number of key-value entries in each bucket
@@ -70,8 +74,9 @@ class HashTable(object):
         TODO: Running time: O(???) Why and under what conditions?"""
         # TODO: Find bucket where given key belongs
         # TODO: Check if key-value entry exists in bucket
-        if key in self.keys():
-            return True
+        
+        if key in self.keys(): #checking if the key is in the list of keys
+            return True 
         else:
             return False
 
@@ -79,17 +84,18 @@ class HashTable(object):
         """Return the value associated with the given key, or raise KeyError.
         TODO: Running time: O(???) Why and under what conditions?"""
         # TODO: Find bucket where given key belongs
-        bucket_index = self._bucket_index(key)
-        bucket = self.buckets[bucket_index]
+        
+        bucket_index = self._bucket_index(key)  #finding the index of the bucket where the key belongs
+        bucket = self.buckets[bucket_index] #getting the bucket at the index
         # TODO: Check if key-value entry exists in bucket
         # TODO: Find key-value entry in bucket
-        entry = None
-        for item in bucket:
+        entry = None    #creating a variable to store the entry
+        for item in bucket: #iterating over the items in the bucket
             if item[0] == key:
                 entry = item
                 break
-        if entry is not None:
-            return entry[1]
+        if entry is not None:   #checking if the entry is not None
+            return entry[1] #returning the value associated with the key
         # TODO: If found, return value associated with given key
         if entry is None:
             raise KeyError('Key not found: {}'.format(key))
@@ -101,16 +107,17 @@ class HashTable(object):
         TODO: Running time: O(???) Why and under what conditions?"""
         # TODO: Find bucket where given key belongs
         # TODO: Check if key-value entry exists in bucket
-        bucket_index = self._bucket_index(key)
-        bucket = self.buckets[bucket_index]
+        
+        bucket_index = self._bucket_index(key)  #finding the index of the bucket where the key belongs
+        bucket = self.buckets[bucket_index] #getting the bucket at the index
         entry = None
-        for item in bucket:
-            if item[0] == key:
+        for item in bucket: #iterating over the items in the bucket
+            if item[0] == key:  
                 entry = item
                 break
-        if entry is not None:
+        if entry is not None:   #checking if the entry is not None
             bucket.delete(entry)
-        bucket.append((key, value))
+        bucket.append((key, value)) # setting the new value for the key
     
         # TODO: If found, update value associated with given key
         # TODO: Otherwise, insert given key-value entry into bucket
@@ -123,17 +130,18 @@ class HashTable(object):
         # TODO: If found, delete entry associated with given key
         # TODO: Otherwise, raise error to tell user delete failed
         # Hint: raise KeyError('Key not found: {}'.format(key))
-        bucket_index = self._bucket_index(key)
-        bucket = self.buckets[bucket_index]
+        
+        bucket_index = self._bucket_index(key) #finding the index of the bucket where the key belongs
+        bucket = self.buckets[bucket_index] #getting the bucket at the index
         entry = None
-        for item in bucket:
+        for item in bucket: #iterating over the items in the bucket
             if item[0] == key:
                 entry = item
                 break
         if entry is not None:
-            bucket.delete(entry)
+            bucket.delete(entry)    #deleting the entry associated with the given key
         else:
-            raise KeyError('Key not found: {}'.format(key))
+            raise KeyError('Key not found: {}'.format(key)) #raising an error if the key is not found
         
 
 
