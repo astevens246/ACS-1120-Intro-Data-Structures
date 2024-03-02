@@ -78,19 +78,17 @@ class Listogram(list):
 
 
 
-    def print_histogram(word_list):
+    def print_histogram(self):
         print()
         print('Histogram:')
-        print('word list: {}'.format(word_list))
-        # Create a listogram and display its contents
-        histogram = Listogram(word_list)
-        print('listogram: {}'.format(histogram))
-        print('{} tokens, {} types'.format(histogram.tokens, histogram.types))
-        for word in word_list[-2:]:
-            freq = histogram.frequency(word)
+        print('word list: {}'.format(self))
+        print('listogram: {}'.format(self.listogram))
+        print('{} tokens, {} types'.format(self.tokens, self.types))
+        for word in self[-2:]:
+            freq = self.frequency(word)
             print('{!r} occurs {} times'.format(word, freq))
         print()
-        print_histogram_samples(histogram)
+        self.print_histogram_samples()
 
 
     def print_histogram_samples(histogram):
@@ -134,18 +132,23 @@ def main():
     arguments = sys.argv[1:]  # Exclude script name in first argument
     if len(arguments) >= 1:
         # Test histogram on given arguments
-        print_histogram(arguments)
+        histogram = Listogram(arguments)
+        histogram.print_histogram(arguments)
     else:
         # Test histogram on letters in a word
         word = 'abracadabra'
-        print_histogram(list(word))
-        # Test histogram on words in a classic book title
+        histogram = Listogram(list(word))
+        histogram.print_histogram()  
+              
         fish_text = 'one fish two fish red fish blue fish'
-        print_histogram(fish_text.split())
+        histogram = Listogram(fish_text.split())
+        histogram.print_histogram()     
+        
         # Test histogram on words in a long repetitive sentence
         woodchuck_text = ('how much wood would a wood chuck chuck'
                           ' if a wood chuck could chuck wood')
-        print_histogram(woodchuck_text.split())
+        histogram = Listogram(woodchuck_text.split())
+        histogram.print_histogram()
 
 
 if __name__ == '__main__':

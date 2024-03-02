@@ -13,6 +13,14 @@ corpus = "A man, a plan, a canal: Panama! A dog, a panic in a pagoda!"
 # with open("great-gatsby.txt", "r") as file:
 #     corpus = file.read()
 
+class MarkovChain(dict):
+    def __init__(self):
+    #Empty dictionary to store markov chain 
+    # Key == word
+    # Value == list of words that follow the key-word
+    
+    def walk(self, distance)
+    
 def make_markov_chain(corpus):
     markov_chain = {}
     words = corpus.split()
@@ -53,11 +61,5 @@ print(' '.join(chain))
 
 
 # Nouns = class needs to be made 
-# class MarkovChain(dict):
-#     def __init__(self):
-#     #Empty dictionary to store markov chain 
-#     # Key == word
-#     # Value == list of words that follow the key-word
-    
-#     def walk(self, distance)
+
     
