@@ -1,6 +1,5 @@
 import random 
-from dictogram import Dictogram
-
+import string
 # Learn a Markov chain from a corpus. 
 
 # You’ve already written code to find how often a token appears in a corpus, 
@@ -9,57 +8,38 @@ from dictogram import Dictogram
 # Do a random walk on a Markov chain. 
 # This should be pretty simple if you pick a good way to store the Markov chain you learn.
     
-corpus = "A man, a plan, a canal: Panama! A dog, a panic in a pagoda!"
 # with open("great-gatsby.txt", "r") as file:
 #     corpus = file.read()
 
 class MarkovChain(dict):
     def __init__(self):
+        super().__init__()
     #Empty dictionary to store markov chain 
     # Key == word
     # Value == list of words that follow the key-word
-    
-    def walk(self, distance)
-    
-def make_markov_chain(corpus):
-    markov_chain = {}
-    words = corpus.split()
-    for i in range(len(words)-1):
-        if words[i] in markov_chain:
-            markov_chain[words[i]].add_count(words[i+1])
-        else:
-            markov_chain[words[i]] = Dictogram([words[i+1]])
-    return markov_chain
 
-pairs = make_markov_chain(corpus)
+    def make_markov_chain(self, corpus):
+        markov_chain = {}
+        words = corpus.split()
+        for i in range(len(words)-1):
+            if words[i] not in markov_chain:
+                markov_chain[words[i]] = []
+            markov_chain[words[i]].append(words[i+1])
+        return markov_chain
 
-word_dict = {}
+    def generate_sentence(self, markov_chain, n_words=10):
+        first_word = random.choice(list(markov_chain.keys()))
+        chain = [first_word]
+        for i in range(n_words):
+            if chain[-1] in markov_chain:
+                next_word = random.choice(markov_chain[chain[-1]])
+                chain.append(next_word)
+            else:
+                break
+        return ' '.join(chain)
 
-for word_1, word_2 in pairs.items():
-    if word_1 in word_dict:
-        word_dict[word_1].append(word_2)
-    else:
-        word_dict[word_1] = [word_2]
-        
-first_word = random.choice(corpus.split())
-chain = [first_word]
-n_words = 10
-
-for i in range(n_words):
-    if chain[-1] in word_dict:
-        dictogram = random.choice(word_dict[chain[-1]])
-        next_word = dictogram.return_weighted_random_word()
-        chain.append(next_word)
-    else:
-        break
-    
-print(' '.join(chain))
-
-
-
-
-
-
-# Nouns = class needs to be made 
-
-    
+corpus = "A man, a plan, a canal: Panama! A dog, a panic in a pagoda!"
+markov = MarkovChain()
+markov_chain = markov.make_markov_chain(corpus)
+sentence = markov.generate_sentence(markov_chain)
+print(sentence)
