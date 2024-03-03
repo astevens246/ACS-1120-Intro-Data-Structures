@@ -6,12 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The Great Gatsby Tweet Generator</title>
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-
 </head>
 <body>
   <h1>The Great Gatsby Tweet Generator</h1>
-    <blockquote>{{ sentence }}</blockquote>
-    <img src="{{ url_for('static', filename='/gatsby.png') }}" alt="Gatsby">
-
+  <blockquote>{{ sentence }}</blockquote>
+  <form action="/tweet" method="post">
+     <input type="hidden" name="sentence" value="{{ sentence }}">
+     <button type="submit">Tweet this</button>
+  </form>
+  <img src="{{ url_for('static', filename='gatsby.png') }}" alt="Gatsby">
 </body>
 </html>

@@ -50,5 +50,25 @@ blockquote:after {
 img {
     display: block;
     margin: 0 auto;
-    max-width: 100%;
+    max-width: 75%; /* Adjust the percentage value to make the image smaller */
+}
+
+button {
+    background-color: #023047;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 12px;
+}
+
+button:hover {
+    background-color: #8ecae6;
+    color: black;
 }
