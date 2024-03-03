@@ -4,9 +4,12 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tweet Generator</title>
+  <title>The Great Gatsby Tweet Generator</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+
 </head>
 <body>
-    <blockquote>TODO: Replace this text with the sentence you generated!</blockquote>
+  <h1>The Great Gatsby Tweet Generator</h1>
+    <blockquote>{{ sentence }}</blockquote>
 </body>
 </html>

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import render_template, Flask
 from clean_text import clean_text, postprocess_sentence
 from tokens import tokenize, remove_punctuation
 
@@ -23,4 +23,4 @@ def home():
     markov_chain = markov.make_markov_chain(corpus, n)
     sentence = markov.generate_sentence(markov_chain, n)
     sentence = postprocess_sentence(sentence)
-    return sentence  # Return the sentence with punctuation
+    return render_template('index.html', sentence=sentence)  # Return the sentence with punctuation
