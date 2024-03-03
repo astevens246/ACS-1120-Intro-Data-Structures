@@ -11,35 +11,28 @@ def read_file(source_text):
         words = file.read().split()
     return words
 class Histogram:
-    def __init__(self, words):
-        self.words = words
-    
-    def histogram (source_text):
+    def __init__(self, source_text):
         with open(source_text, 'r') as file:
-            return file.read().split()
+            self.words = file.read().split()
 
-    def unique_words (histogram):
-        return len(set(histogram))
-        print (unique_words)
+    def unique_words(self):
+        return len(set(self.words))
 
-    def frequency (self, word):
+    def frequency(self, word):
         return self.words.count(word)
         
-    def most_common (histogram):
-        return Counter(histogram).most_common(1)
-        print (most_common)
+    def most_common(self):
+        return Counter(self.words).most_common(1)
         
-    def least_common (histogram):
-        counter = Counter(histogram)
+    def least_common(self):
+        counter = Counter(self.words)
         return counter.most_common()[-1]
 
-    def different_words (histogram):
-        return len(histogram)
-        print (different_words)
-        
+    def different_words(self):
+        return len(self.words)
 
-    def frequency_analysis(histogram):
-        counter = Counter(histogram)
+    def frequency_analysis(self):
+        counter = Counter(self.words)
         frequencies = list(counter.values())
 
         mean = statistics.mean(frequencies)
@@ -48,38 +41,34 @@ class Histogram:
 
         return mean, median, mode
 
-    text = histogram('great-gatsby.txt')
-    # print(f"Unique words: {unique_words(text)}")
-    # print(f"Most common word: {most_common(text)}")
-    # print(f"Least common word: {least_common(text)}")
-    # mean, median, mode = frequency_analysis(text)
-    # print(f"Mean: {mean}, Median: {median}, Mode: {mode}")
+histogram = Histogram('great-gatsby.txt')
+print(f"Unique words: {histogram.unique_words()}")
+print(f"Most common word: {histogram.most_common()}")
+print(f"Least common word: {histogram.least_common()}")
+mean, median, mode = histogram.frequency_analysis()
+print(f"Mean: {mean}, Median: {median}, Mode: {mode}")
 
-    # frequency('and', text)
-    # print(frequency('and', text))
+# # Generate a list of random words
+# def generate_words(n):
+#     words = []
+#     for _ in range(n):
+#         word = ''.join(random.choice(string.ascii_lowercase) for _ in range(5))  # Generate a random 5-letter word
+#         words.append(word)
+#     return words
 
+# # Benchmark the count operation
+# def benchmark(n):
+#     words = generate_words(n)
+#     histogram = Histogram(words)  # Create a histogram with the words
 
-# Generate a list of random words
-def generate_words(n):
-    words = []
-    for _ in range(n):
-        word = ''.join(random.choice(string.ascii_lowercase) for _ in range(5))  # Generate a random 5-letter word
-        words.append(word)
-    return words
+#     start_time = time.time()
+#     histogram.frequency(random.choice(words))  # Count a random word
+#     end_time = time.time()
 
-# Benchmark the count operation
-def benchmark(n):
-    words = generate_words(n)
-    histogram = Histogram(words)  # Create a histogram with the words
+#     print(f'Count operation took {end_time - start_time} seconds for {n} unique word types')
 
-    start_time = time.time()
-    histogram.frequency(random.choice(words))  # Count a random word
-    end_time = time.time()
-
-    print(f'Count operation took {end_time - start_time} seconds for {n} unique word types')
-
-# Benchmark with small and large histogram sizes
-benchmark(100)
-benchmark(10000)
+# # Benchmark with small and large histogram sizes
+# benchmark(100)
+# benchmark(10000)
 
 

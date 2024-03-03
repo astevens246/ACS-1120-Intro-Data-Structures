@@ -1,6 +1,8 @@
 import random 
 import string
-import clean_text 
+from clean_text import clean_text
+from tokens import tokenize, remove_punctuation
+from clean_text import postprocess_sentence
 # Learn a Markov chain from a corpus. 
 
 # You’ve already written code to find how often a token appears in a corpus, 
@@ -34,35 +36,55 @@ class MarkovChain(dict):
 
     def make_markov_chain(self, corpus, n):
         markov_chain = {}
-        words = corpus.split()
+        words = ['__START__'] * n + corpus.split() + ['__END__']  # Start with n __START__ tokens
         queue = Queue()
-        for word in words:
-            if len(queue.items) == n:
-                queue.dequeue()
-            queue.enqueue(word)
-            if len(queue.items) == n:
-                key = tuple(queue.items)
-                if key not in markov_chain:
-                    markov_chain[key] = []
-                if words.index(word) + 1 < len(words):
-                    markov_chain[key].append(words[words.index(word) + 1])
-        return markov_chain
-
+        try:
+            for i in range(len(words)):
+                if len(queue.items) == n:
+                    queue.dequeue()
+                queue.enqueue(words[i])
+                if len(queue.items) == n:
+                    key = tuple(queue.items)
+                    if key not in markov_chain:
+                        markov_chain[key] = []
+                    if i + 1 < len(words):
+                        markov_chain[key].append(words[i + 1])
+        except Exception as e:
+            print(f"Error while making Markov chain: {e}")
+        finally:
+            return markov_chain  # Always return markov_chain, even if there's an error
+    
     def generate_sentence(self, markov_chain, n, n_words=10):
-        first_word = random.choice(list(markov_chain.keys()))
-        chain = list(first_word)
-        for i in range(n_words):
-            if tuple(chain[-n:]) in markov_chain:
-                next_word = random.choice(markov_chain[tuple(chain[-n:])])
+        # Start with a random state
+        state = random.choice(list(markov_chain.keys()))
+        chain = list(state)
+        while len(chain) < n_words and chain[-1] != '__END__':
+            state = tuple(chain[-n:])
+            if state in markov_chain:
+                next_word = random.choice(markov_chain[state])
                 chain.append(next_word)
             else:
                 break
         return ' '.join(chain)
 
-corpus = "A man, a plan, a canal: Panama! A dog, a panic in a pagoda!"
+
+# Define your corpus
+with open("great-gatsby.txt", "r") as file:
+    corpus = file.read()
+# Clean and tokenize the text
+cleaned_corpus = clean_text(corpus)
+no_punc_corpus = remove_punctuation(cleaned_corpus)
+tokens = tokenize(no_punc_corpus)
+
+# Convert tokens back to string and feed into the Markov chain
+corpus = ' '.join(tokens)
 markov = MarkovChain()
-n = 6
+n = 10 # Set the number of words to look at
+n_words = 10
 markov_chain = markov.make_markov_chain(corpus, n)
-sentence = markov.generate_sentence(markov_chain, n)
-cleaned_sentence = clean_text.clean_text(sentence)
-print(cleaned_sentence)
+
+sentence = markov.generate_sentence(markov_chain, n, n_words)
+
+sentence = postprocess_sentence(sentence)
+print(sentence)
+

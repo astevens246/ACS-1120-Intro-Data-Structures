@@ -1,18 +1,26 @@
-# create a flask app that will display the random sentence generated in sentence.py 
-# when the user visits the home page
-
 from flask import Flask
-import sentence
+from clean_text import clean_text, postprocess_sentence
+from tokens import tokenize, remove_punctuation
+
 import string
+from markov import MarkovChain  # Import the MarkovChain class
 
 app = Flask(__name__)
 
-
 @app.route('/')
 def home():
-    word_list = sentence.histogram.histogram('great-gatsby.txt')
-    histogram_data = sentence.create_histogram(word_list)
-    
-    sentence_data = sentence.generate_sentence(histogram_data, 25)
-    sentence_without_punctuation = ''.join(sentence_data).translate(str.maketrans('', '', string.punctuation))
-    return sentence_without_punctuation  # Return the sentence without punctuation
+    with open("great-gatsby.txt", "r") as file:
+        corpus = file.read()
+    # Clean and tokenize the text
+    cleaned_corpus = clean_text(corpus)
+    no_punc_corpus = remove_punctuation(cleaned_corpus)
+    tokens = tokenize(no_punc_corpus)
+
+    # Convert tokens back to string and feed into the Markov chain
+    corpus = ' '.join(tokens)
+    markov = MarkovChain()
+    n = 2 # Set the number of words to look at
+    markov_chain = markov.make_markov_chain(corpus, n)
+    sentence = markov.generate_sentence(markov_chain, n)
+    sentence = postprocess_sentence(sentence)
+    return sentence  # Return the sentence with punctuation
