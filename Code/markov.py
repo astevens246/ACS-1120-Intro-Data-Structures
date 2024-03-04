@@ -11,8 +11,7 @@ from clean_text import postprocess_sentence
 # Do a random walk on a Markov chain. 
 # This should be pretty simple if you pick a good way to store the Markov chain you learn.
     
-# with open("great-gatsby.txt", "r") as file:
-#     corpus = file.read()
+
 class Queue:
     def __init__(self):
         self.items = []

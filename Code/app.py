@@ -19,7 +19,7 @@ def home():
     # Convert tokens back to string and feed into the Markov chain
     corpus = ' '.join(tokens)
     markov = MarkovChain()
-    n = 2 # Set the number of words to look at
+    n = 2 # Set the number of words to look at (order of Markov chain)
     markov_chain = markov.make_markov_chain(corpus, n)
     sentence = markov.generate_sentence(markov_chain, n)
     sentence = postprocess_sentence(sentence)
@@ -28,7 +28,6 @@ def home():
 @app.route('/tweet', methods=['POST'])
 def tweet():
     status = request.form['sentence']
-    # Use your function to tweet the status here
-    # twitter.tweet(status)
-    print(status)  # Remove this line when you've added the tweet function
+
+    print(status)  
     return redirect('/')
