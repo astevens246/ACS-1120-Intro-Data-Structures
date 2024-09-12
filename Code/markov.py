@@ -1,6 +1,8 @@
 import random 
-from dictogram import Dictogram
-
+import string
+from clean_text import clean_text
+from tokens import tokenize, remove_punctuation
+from clean_text import postprocess_sentence
 # Learn a Markov chain from a corpus. 
 
 # You’ve already written code to find how often a token appears in a corpus, 
@@ -9,55 +11,79 @@ from dictogram import Dictogram
 # Do a random walk on a Markov chain. 
 # This should be pretty simple if you pick a good way to store the Markov chain you learn.
     
-corpus = "A man, a plan, a canal: Panama! A dog, a panic in a pagoda!"
-# with open("great-gatsby.txt", "r") as file:
-#     corpus = file.read()
 
-def make_markov_chain(corpus):
-    markov_chain = {}
-    words = corpus.split()
-    for i in range(len(words)-1):
-        if words[i] in markov_chain:
-            markov_chain[words[i]].add_count(words[i+1])
-        else:
-            markov_chain[words[i]] = Dictogram([words[i+1]])
-    return markov_chain
+class Queue:
+    def __init__(self):
+        self.items = []
 
-pairs = make_markov_chain(corpus)
+    def enqueue(self, item):
+        self.items.append(item)
 
-word_dict = {}
+    def dequeue(self):
+        if not self.items:
+            raise Exception("Cannot dequeue from an empty queue")
+        return self.items.pop(0)
 
-for word_1, word_2 in pairs.items():
-    if word_1 in word_dict:
-        word_dict[word_1].append(word_2)
-    else:
-        word_dict[word_1] = [word_2]
-        
-first_word = random.choice(corpus.split())
-chain = [first_word]
+    def __iter__(self):
+        return iter(self.items)
+class MarkovChain(dict):
+    def __init__(self):
+        super().__init__()
+    #Empty dictionary to store markov chain 
+    # Key == word
+    # Value == list of words that follow the key-word
+
+    def make_markov_chain(self, corpus, n):
+        markov_chain = {}
+        words = ['__START__'] * n + corpus.split() + ['__END__']  # Start with n __START__ tokens
+        queue = Queue()
+        try:
+            for i in range(len(words)):
+                if len(queue.items) == n:
+                    queue.dequeue()
+                queue.enqueue(words[i])
+                if len(queue.items) == n:
+                    key = tuple(queue.items)
+                    if key not in markov_chain:
+                        markov_chain[key] = []
+                    if i + 1 < len(words):
+                        markov_chain[key].append(words[i + 1])
+        except Exception as e:
+            print(f"Error while making Markov chain: {e}")
+        finally:
+            return markov_chain  # Always return markov_chain, even if there's an error
+    
+    def generate_sentence(self, markov_chain, n, n_words=10):
+        # Start with a random state
+        state = random.choice(list(markov_chain.keys()))
+        chain = list(state)
+        while len(chain) < n_words and chain[-1] != '__END__':
+            state = tuple(chain[-n:])
+            if state in markov_chain:
+                next_word = random.choice(markov_chain[state])
+                chain.append(next_word)
+            else:
+                break
+        return ' '.join(chain)
+
+
+# Define your corpus
+with open("great-gatsby.txt", "r") as file:
+    corpus = file.read()
+# Clean and tokenize the text
+cleaned_corpus = clean_text(corpus)
+no_punc_corpus = remove_punctuation(cleaned_corpus)
+tokens = tokenize(no_punc_corpus)
+
+# Convert tokens back to string and feed into the Markov chain
+corpus = ' '.join(tokens)
+markov = MarkovChain()
+n = 10 # Set the number of words to look at
 n_words = 10
+markov_chain = markov.make_markov_chain(corpus, n)
 
-for i in range(n_words):
-    if chain[-1] in word_dict:
-        dictogram = random.choice(word_dict[chain[-1]])
-        next_word = dictogram.return_weighted_random_word()
-        chain.append(next_word)
-    else:
-        break
-    
-print(' '.join(chain))
+sentence = markov.generate_sentence(markov_chain, n, n_words)
 
+sentence = postprocess_sentence(sentence)
+print(sentence)
 
-
-
-
-
-# Nouns = class needs to be made 
-# class MarkovChain(dict):
-#     def __init__(self):
-#     #Empty dictionary to store markov chain 
-#     # Key == word
-#     # Value == list of words that follow the key-word
-    
-#     def walk(self, distance)
-    

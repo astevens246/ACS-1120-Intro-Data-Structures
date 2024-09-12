@@ -19,14 +19,15 @@ class ListogramTest(unittest.TestCase):
         # but if you implement it as a list of lists (or a list of count-lists)
         # you should modify the fish_list fixture above and/or this test (only)
         listogram = Listogram(self.fish_words)
-        # Verify histogram as list of entries like [(word, count)]
-        assert len(listogram) == 5
-        self.assertCountEqual(listogram, self.fish_list)  # Ignore item order
-        # Verify histogram as dictionary of entries like {word: count}
-        dictogram = dict(listogram)
+        assert len(listogram.listogram) == 5
+        # Convert list of lists to list of tuples
+        listogram_tuples = [(word, count) for word, count in listogram.listogram]
+        self.assertCountEqual(listogram_tuples, self.fish_list)  # Ignore item order
+        dictogram = dict(listogram.listogram)
         assert len(dictogram) == 5
-        self.assertCountEqual(dictogram, self.fish_dict)  # Ignore item order
+        self.assertCountEqual(dictogram, self.fish_dict)  # Ignore item order  
 
+        
     def test_contains(self):
         histogram = Listogram(self.fish_words)
         # All of these words should be found

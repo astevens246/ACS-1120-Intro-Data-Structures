@@ -1,7 +1,9 @@
 #!python
 
 from __future__ import division, print_function  # Python 2 and 3 compatibility
+import time
 import random
+import string
 
 
 class Dictogram(dict):
@@ -128,3 +130,25 @@ def main():
 
 if __name__ == '__main__':
     main()
+# Generate a list of random words
+def generate_words(n):
+    words = []
+    for _ in range(n):
+        word = ''.join(random.choice(string.ascii_lowercase) for _ in range(5))  # Generate a random 5-letter word
+        words.append(word)
+    return words
+
+# Benchmark the count operation
+def benchmark(n):
+    words = generate_words(n)
+    dictogram = Dictogram(words)  # Create a dictogram with the words
+
+    start_time = time.time()
+    dictogram.frequency(random.choice(words))  # Count a random word
+    end_time = time.time()
+
+    print(f'Count operation took {end_time - start_time} seconds for {n} unique word types')
+
+# Benchmark with small and large histogram sizes
+benchmark(100)
+benchmark(10000)
